@@ -9,68 +9,20 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-```{r}
-install.packages("knitr")
-install.packages("lattice")
-install.packages("tidyverse")
-install.packages("likert")
-install.packages("MASS")
-install.packages("psych")
-install.packages("viridis")
-install.packages("ggplot2")
-install.packages("here")
-install.packages("flextable")
-install.packages("devtools")
-install.packages("GPArotation")
-# devtools::install_github("matherion/userfriendlyscience", dependencies=T)
-install.packages("ufs")
-# install klippy for copy-to-clipboard button in code chunks
-install.packages("remotes")
-remotes::install_github("rlesur/klippy")
-```
-```{r}
-# set options
-options(stringsAsFactors = F)         # no automatic data transformation
-options("scipen" = 100, "digits" = 4) # suppress math annotation
-# install packages
-library(knitr)
-library(lattice)
-library(tidyverse)
-library(likert)
-library(MASS)
-library(psych)
-library(viridis)
-library(ggplot2)
-library(here)
-library(flextable)
-library(devtools)
-# library(userfriendlyscience)
-# activate klippy for copy-to-clipboard button
-klippy::klippy()
-```
-
 
 ```{r pressure, echo=FALSE}
 plot(pressure)
 ```
 ```{r}
 library("tidyverse")
-dataSet <- read.csv("perceive_survey17.csv")
+
+dataSet <- read.csv("dataset/perceive_survey17.csv")
 
 dataSet
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+```{r}
+  ggplot(data = dataSet) + geom_boxplot(mapping = aes(x = Q8, y = Q9.1))
+```
+
+
