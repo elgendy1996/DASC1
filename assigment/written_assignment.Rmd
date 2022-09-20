@@ -1,0 +1,32 @@
+---
+title: "written_assignment"
+author: "Mohamed Ismael, Mohamed Elgendy"
+date: "2022-09-20"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+  library(tidyverse)
+```
+
+```{r}
+  qog_std <- read.csv("dataset/qog_std_cs_jan22.csv")
+
+
+
+qog_std
+
+```
+```{r}
+  ggplot(data = qog_std) +
+  geom_point(mapping = aes(x = spi_bn, y = egov_hci))
+```
+Basic Human Needs (SPI) (spi_bn)
+Human Capital Index (egov_hci)
+
