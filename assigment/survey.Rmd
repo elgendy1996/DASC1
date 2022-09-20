@@ -22,7 +22,7 @@ dataSet
 ```
 
 ```{r}
-  ggplot(data = dataSet) + geom_boxplot(mapping = aes(x = Q8, y = Q9.1))
+  ggplot(data = dataSet) + geom_count(mapping = aes(x = Q8, y = Q9_1))
 ```
 
 

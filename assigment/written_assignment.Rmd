@@ -29,4 +29,20 @@ qog_std
 ```
 Basic Human Needs (SPI) (spi_bn)
 Human Capital Index (egov_hci)
+COVID
+Political Rights (fh_pr)
+Paid Bribe: Police (gcb_bpol)
+Total bribery rate, total population (gcb_br)
+Accountability and Transparency (iiag_acc)
+Anti-corruption (iiag_corr)
+Number of previous democratic breakdowns (bmr_dembr)
+Number of COVID-19 cases reported (jht_ccc) 436
+Number of COVID-19 deaths reported (jht_ccd)
+Life Expectancy, Both sexes, Age 1-4 years (ihme_lifexp_0104t)
+Total fertility rates (oecd_fertility_t1)
+Health (iiag_he)
+Road fatalities (oecd_rddeath_t1)
+Adult population smoking daily (oecd_smoke_g1)
+Alcohol consumption per capita (in litres) (who_alcohol10)
+Suicide Rate (per 100,000 population), Total (who_suit)
 
