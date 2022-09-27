@@ -49,6 +49,8 @@ Youths not in education or employment 15-19 (oecd_socexclus_t1a)
 Youths not in education or employment 20-24 (oecd_socexclus_t1b)
 liberal democracy index (vdem_libdem)
 
+Freedom of Expression and Belief (fh_feb)
+
 # Main question : How has COVID-19 effected education and mental health? (suicide rate, alcohol consumptions)
 
 
@@ -66,6 +68,10 @@ covid_effect <- qog_std %>%
     eu_isiuhlt,
     vdem_corr,
     bti_eo,
+    wdi_firfown,
+    gfs_educ,
+    oecd_evogdp_t1,
+    fh_feb,
     fh_pr
   )%>%
   rename(
@@ -80,7 +86,11 @@ covid_effect <- qog_std %>%
     political_rights = fh_pr,
     seeking_health_info = eu_isiuhlt,
     political_corr = vdem_corr,
-    equal_oppor = bti_eo
+    equal_oppor = bti_eo,
+    firm_With_women_ownership = wdi_firfown,
+    exp_on_edu = gfs_educ,
+    gdp_growth =oecd_evogdp_t1,
+    freedom_of_speech = fh_feb
   )
 
 covid_effect
@@ -99,8 +109,15 @@ covid_effect
   ggplot(data = covid_effect) +
   geom_smooth(mapping = aes(x = liberal_democracy, y = equal_oppor))
 
+```
+```{r}
+  ggplot(data = covid_effect) +
+  geom_point(mapping = aes(x = liberal_democracy, y = freedom_of_speech))
+
 
 ```
+
+
 
 
 
