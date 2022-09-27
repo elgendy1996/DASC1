@@ -63,6 +63,9 @@ covid_effect <- qog_std %>%
     who_let,
     egov_hci,
     vdem_libdem,
+    eu_isiuhlt,
+    vdem_corr,
+    bti_eo,
     fh_pr
   )%>%
   rename(
@@ -74,13 +77,31 @@ covid_effect <- qog_std %>%
     life_expectancy = who_let,
     basic_human_needs = egov_hci,
     liberal_democracy = vdem_libdem,
-    political_rights = fh_pr
+    political_rights = fh_pr,
+    seeking_health_info = eu_isiuhlt,
+    political_corr = vdem_corr,
+    equal_oppor = bti_eo
   )
 
 covid_effect
 ```
 ```{r}
-  ggplot(data = covid_effect, mapping = aes(x = liberal_democracy, y = political_rights)) + 
-  geom_boxplot(mapping = aes(x = group(cut_number(political_rights)))
+  ggplot(data = covid_effect) +
+  geom_smooth(mapping = aes(x = liberal_democracy, y = political_corr))
 ```
+
+
+
+
+
+
+```{r}
+  ggplot(data = covid_effect) +
+  geom_smooth(mapping = aes(x = liberal_democracy, y = equal_oppor))
+
+
+```
+
+
+
 
