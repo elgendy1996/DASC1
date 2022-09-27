@@ -24,8 +24,7 @@ qog_std
 
 ```
 ```{r}
-  ggplot(data = qog_std) +
-  geom_point(mapping = aes(x = spi_bn, y = egov_hci))
+ qog_std$oecd_c
 ```
 Basic Human Needs (SPI) (spi_bn)
 Human Capital Index (egov_hci)
@@ -45,4 +44,43 @@ Road fatalities (oecd_rddeath_t1)
 Adult population smoking daily (oecd_smoke_g1)
 Alcohol consumption per capita (in litres) (who_alcohol10)
 Suicide Rate (per 100,000 population), Total (who_suit)
+Employment rate total 15-64 (eu_empy1564t)
+Youths not in education or employment 15-19 (oecd_socexclus_t1a)
+Youths not in education or employment 20-24 (oecd_socexclus_t1b)
+liberal democracy index (vdem_libdem)
+
+# Main question : How has COVID-19 effected education and mental health? (suicide rate, alcohol consumptions)
+
+
+```{r}
+covid_effect <- qog_std %>%
+  select(
+    jht_ccc,
+    jht_ccd,
+    who_alcohol10,
+    who_suit,
+    eu_empy1564t,
+    who_let,
+    egov_hci,
+    vdem_libdem,
+    fh_pr
+  )%>%
+  rename(
+    covid_deaths = jht_ccc,
+    covid_cases = jht_ccd,
+    alcohol_consumption = who_alcohol10,
+    suicide_rate = who_suit,
+    employment_rate = eu_empy1564t,
+    life_expectancy = who_let,
+    basic_human_needs = egov_hci,
+    liberal_democracy = vdem_libdem,
+    political_rights = fh_pr
+  )
+
+covid_effect
+```
+```{r}
+  ggplot(data = covid_effect, mapping = aes(x = liberal_democracy, y = political_rights)) + 
+  geom_boxplot(mapping = aes(x = group(cut_number(political_rights)))
+```
 
