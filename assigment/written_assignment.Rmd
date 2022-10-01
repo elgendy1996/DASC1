@@ -74,6 +74,7 @@ covid_effect <- qog_std %>%
     fh_feb,
     wvs_satlif,
     vdem_exbribe,
+    vdem_exembez,
     fh_pr
   )%>%
   rename(
@@ -94,7 +95,8 @@ covid_effect <- qog_std %>%
     gdp_growth =oecd_evogdp_t1,
     freedom_of_speech = fh_feb,
     satisfiction_of_life = wvs_satlif,
-    accepting_bribe = vdem_exbribe
+    accepting_bribe = vdem_exbribe,
+    embezzlement = vdem_exembez
   )
 
 covid_effect
@@ -129,7 +131,11 @@ covid_effect
 
 
 ```
+```{r}
+  ggplot(data = covid_effect) +
+  geom_smooth(mapping = aes(x = liberal_democracy, y = embezzlement))
 
+```
 
 
 
