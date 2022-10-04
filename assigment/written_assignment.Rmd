@@ -49,6 +49,8 @@ Youths not in education or employment 20-24 (oecd_socexclus_t1b)
 liberal democracy index (vdem_libdem)
 Satisfaction with your life (wvs_satlif)
 Freedom of Expression and Belief (fh_feb)
+Type of Government (cpds_tg)
+Institution (gol_inst) 
 
 # Main question : How has COVID-19 effected education and mental health? (suicide rate, alcohol consumptions)
 
@@ -60,7 +62,6 @@ democracy_effect <- qog_std %>%
     jht_ccd,
     who_alcohol10,
     who_suit,
-    eu_empy1564t,
     who_let,
     egov_hci,
     vdem_libdem,
@@ -74,14 +75,15 @@ democracy_effect <- qog_std %>%
     wvs_satlif,
     vdem_exbribe,
     vdem_exembez,
-    fh_pr
+    fh_pr,
+    vdem_mecorrpt,
+    gol_inst
   )%>%
   rename(
     covid_deaths = jht_ccc,
     covid_cases = jht_ccd,
     alcohol_consumption = who_alcohol10,
     suicide_rate = who_suit,
-    employment_rate = eu_empy1564t,
     life_expectancy = who_let,
     basic_human_needs = egov_hci,
     liberal_democracy = vdem_libdem,
@@ -95,8 +97,14 @@ democracy_effect <- qog_std %>%
     freedom_of_speech = fh_feb,
     satisfiction_of_life = wvs_satlif,
     accepting_bribe = vdem_exbribe,
-    embezzlement = vdem_exembez
-  )
+    embezzlement = vdem_exembez,
+    media_corrupt = vdem_mecorrpt
+  ) %>% drop_na(liberal_democracy, 
+                political_corr, equal_oppor, 
+                freedom_of_speech, 
+                accepting_bribe, 
+                embezzlement,
+                media_corrupt)
 
 democracy_effect
 ```
@@ -117,7 +125,7 @@ democracy_effect
 ```
 ```{r}
   ggplot(data = democracy_effect) +
-  geom_point(mapping = aes(x = liberal_democracy, y = freedom_of_speech))
+  geom_point(mapping = aes(x = liberal_democracy, y = freedom_of_speech)) 
 
 
 ```
@@ -135,7 +143,13 @@ democracy_effect
   geom_smooth(mapping = aes(x = liberal_democracy, y = embezzlement))
 
 ```
+```{r}
+  ggplot(data = democracy_effect, mapping = aes(x = liberal_democracy, y = freedom_of_speech)) +
+  geom_point() +
+  geom_smooth(method = lm, color ="red", se=FALSE)
 
+
+```
 
 
 
