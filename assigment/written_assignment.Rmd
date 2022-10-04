@@ -20,8 +20,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 
-qog_std
-
+qog_std %>% drop_na()
 ```
 ```{r}
  qog_std$oecd_c
@@ -55,7 +54,7 @@ Freedom of Expression and Belief (fh_feb)
 
 
 ```{r}
-covid_effect <- qog_std %>%
+democracy_effect <- qog_std %>%
   select(
     jht_ccc,
     jht_ccd,
@@ -99,10 +98,10 @@ covid_effect <- qog_std %>%
     embezzlement = vdem_exembez
   )
 
-covid_effect
+democracy_effect
 ```
 ```{r}
-  ggplot(data = covid_effect) +
+  ggplot(data = democracy_effect) +
   geom_smooth(mapping = aes(x = liberal_democracy, y = political_corr))
 ```
 
@@ -112,12 +111,12 @@ covid_effect
 
 
 ```{r}
-  ggplot(data = covid_effect) +
+  ggplot(data = democracy_effect) +
   geom_smooth(mapping = aes(x = liberal_democracy, y = equal_oppor))
 
 ```
 ```{r}
-  ggplot(data = covid_effect) +
+  ggplot(data = democracy_effect) +
   geom_point(mapping = aes(x = liberal_democracy, y = freedom_of_speech))
 
 
@@ -126,13 +125,13 @@ covid_effect
 ##unexpected outcome after researching it turns out that newly trasitioned countriecies the more corruption it will have
 
 ```{r}
-  ggplot(data = covid_effect) +
+  ggplot(data = democracy_effect) +
   geom_smooth(mapping = aes(x = liberal_democracy, y = accepting_bribe))
 
 
 ```
 ```{r}
-  ggplot(data = covid_effect) +
+  ggplot(data = democracy_effect) +
   geom_smooth(mapping = aes(x = liberal_democracy, y = embezzlement))
 
 ```
