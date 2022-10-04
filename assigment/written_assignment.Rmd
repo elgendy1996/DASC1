@@ -76,8 +76,10 @@ democracy_effect <- qog_std %>%
     vdem_exbribe,
     vdem_exembez,
     fh_pr,
+    iiag_rolf,
     vdem_mecorrpt,
-    gol_inst
+    bti_cr,
+    wvs_imprel
   )%>%
   rename(
     covid_deaths = jht_ccc,
@@ -98,13 +100,18 @@ democracy_effect <- qog_std %>%
     satisfiction_of_life = wvs_satlif,
     accepting_bribe = vdem_exbribe,
     embezzlement = vdem_exembez,
-    media_corrupt = vdem_mecorrpt
+    media_corrupt = vdem_mecorrpt,
+    rule_of_law = iiag_rolf,
+    civil_rights = bti_cr,
+    relig_importance = wvs_imprel
   ) %>% drop_na(liberal_democracy, 
                 political_corr, equal_oppor, 
                 freedom_of_speech, 
                 accepting_bribe, 
                 embezzlement,
                 media_corrupt)
+    
+  )
 
 democracy_effect
 ```
@@ -150,6 +157,27 @@ democracy_effect
 
 
 ```
+## Rule of law and justice
+```{r}
+  ggplot(data = democracy_effect) +
+  geom_smooth(mapping = aes(x = liberal_democracy, y = rule_of_law))
 
+```
+# media corrupt
+```{r}
+  ggplot(data = democracy_effect) +
+  geom_smooth(mapping = aes(x = liberal_democracy, y = media_corrupt))
+
+```
+```{r}
+  ggplot(data = democracy_effect) +
+  geom_point(mapping = aes(x = liberal_democracy, y = civil_rights))
+```
+
+
+```{r}
+  ggplot(data = democracy_effect) +
+  geom_smooth(mapping = aes(x = liberal_democracy, y = relig_importance))
+```
 
 
