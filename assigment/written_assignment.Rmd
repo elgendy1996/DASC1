@@ -14,7 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
   library(tidyverse)
 ```
-
+# Import
 ```{r}
   qog_std <- read.csv("dataset/qog_std_cs_jan22.csv")
 
@@ -25,6 +25,9 @@ qog_std %>% drop_na()
 ```{r}
  qog_std$oecd_c
 ```
+# Tidy
+
+## Friendly variable names
 Basic Human Needs (SPI) (spi_bn)
 Human Capital Index (egov_hci)
 COVID
@@ -51,6 +54,17 @@ Satisfaction with your life (wvs_satlif)
 Freedom of Expression and Belief (fh_feb)
 Type of Government (cpds_tg)
 Institution (gol_inst) 
+Top 10% income share (top_top10_income_share)
+Top 1% income share (top_top1_income_share)
+ Extent of market dominance. 1-7 (best) (wef_md)
+ Burden of government regulation. 1-7 (best) (wef_bgr)
+Cultural Diversity (fe_cultdiv)
+Population growth rates (oecd_evopop_g1)
+Employment rates: total (oecd_emplgndr_t1c)
+Employment rates for age group 15-24 (oecd_emplage_t1a)
+Perception of Electoral Integrity Index Type (pei_peit)
+Institution (gol_inst)
+
 
 # Main question : How has COVID-19 effected education and mental health? (suicide rate, alcohol consumptions)
 
@@ -58,63 +72,31 @@ Institution (gol_inst)
 ```{r}
 democracy_effect <- qog_std %>%
   select(
-    jht_ccc,
-    jht_ccd,
-    who_alcohol10,
-    who_suit,
-    who_let,
-    egov_hci,
     vdem_libdem,
-    eu_isiuhlt,
     vdem_corr,
     bti_eo,
-    wdi_firfown,
-    gfs_educ,
     oecd_evogdp_t1,
     fh_feb,
-    wvs_satlif,
-    vdem_exbribe,
-    vdem_exembez,
-    fh_pr,
-    iiag_rolf,
     vdem_mecorrpt,
-    bti_cr,
-    wvs_imprel
   )%>%
   rename(
-    covid_deaths = jht_ccc,
-    covid_cases = jht_ccd,
-    alcohol_consumption = who_alcohol10,
-    suicide_rate = who_suit,
-    life_expectancy = who_let,
-    basic_human_needs = egov_hci,
     liberal_democracy = vdem_libdem,
-    political_rights = fh_pr,
-    seeking_health_info = eu_isiuhlt,
     political_corr = vdem_corr,
     equal_oppor = bti_eo,
-    firm_With_women_ownership = wdi_firfown,
-    exp_on_edu = gfs_educ,
     gdp_growth =oecd_evogdp_t1,
     freedom_of_speech = fh_feb,
-    satisfiction_of_life = wvs_satlif,
-    accepting_bribe = vdem_exbribe,
-    embezzlement = vdem_exembez,
     media_corrupt = vdem_mecorrpt,
-    rule_of_law = iiag_rolf,
-    civil_rights = bti_cr,
-    relig_importance = wvs_imprel
   ) %>% drop_na(liberal_democracy, 
-                political_corr, equal_oppor, 
+                political_corr, 
+                equal_oppor, 
                 freedom_of_speech, 
-                accepting_bribe, 
-                embezzlement,
-                media_corrupt)
-    
+                media_corrupt
   )
+    
 
 democracy_effect
 ```
+Every plot should have a title
 ```{r}
   ggplot(data = democracy_effect) +
   geom_smooth(mapping = aes(x = liberal_democracy, y = political_corr))
@@ -136,6 +118,32 @@ democracy_effect
 
 
 ```
+```{r}
+  ggplot(data = democracy_effect) +
+  geom_point(mapping = aes(x = liberal_democracy, y = freedom_of_speech, color = election_integrity)) 
+
+
+```
+
+
+# media corrupt
+
+```{r}
+
+  ggplot(data = democracy_effect) +
+  geom_point(mapping = aes(x = liberal_democracy, y = media_corrupt))
+
+```
+Despite freedom of speech being higher in liberal democracies, we see that media corruption is also higher.
+We think might be because there are large companies that want to influence voters to align with their interests.If a large company sees that certain political parties want to implement rules that might damage their revenue, they might
+use the media to steer the conversation in their favor in order to make those rules unpopular to implement.
+
+```{r}
+
+  ggplot(data = democracy_effect) +
+  geom_bar(mapping = aes(x = institution))
+```
+
 
 ##unexpected outcome after researching it turns out that newly trasitioned countriecies the more corruption it will have
 
@@ -161,12 +169,6 @@ democracy_effect
 ```{r}
   ggplot(data = democracy_effect) +
   geom_smooth(mapping = aes(x = liberal_democracy, y = rule_of_law))
-
-```
-# media corrupt
-```{r}
-  ggplot(data = democracy_effect) +
-  geom_smooth(mapping = aes(x = liberal_democracy, y = media_corrupt))
 
 ```
 ```{r}
