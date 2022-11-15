@@ -64,6 +64,8 @@ Employment rates: total (oecd_emplgndr_t1c)
 Employment rates for age group 15-24 (oecd_emplage_t1a)
 Perception of Electoral Integrity Index Type (pei_peit)
 Institution (gol_inst)
+The Region of the Country (ht_region)
+Incarceration (1-5 Higher incarceration) (gpi_jail)
 
 
 # Main question : How has COVID-19 effected education and mental health? (suicide rate, alcohol consumptions)
@@ -78,6 +80,8 @@ democracy_effect <- qog_std %>%
     oecd_evogdp_t1,
     fh_feb,
     vdem_mecorrpt,
+    ht_region,
+    gpi_jail,
   )%>%
   rename(
     liberal_democracy = vdem_libdem,
@@ -86,6 +90,8 @@ democracy_effect <- qog_std %>%
     gdp_growth =oecd_evogdp_t1,
     freedom_of_speech = fh_feb,
     media_corrupt = vdem_mecorrpt,
+    region = ht_region,
+    incarceration_rate = gpi_jail
   ) %>% drop_na(liberal_democracy, 
                 political_corr, 
                 equal_oppor, 
@@ -115,16 +121,14 @@ Every plot should have a title
 ```{r}
   ggplot(data = democracy_effect) +
   geom_point(mapping = aes(x = liberal_democracy, y = freedom_of_speech)) 
-
-
 ```
 ```{r}
   ggplot(data = democracy_effect) +
-  geom_point(mapping = aes(x = liberal_democracy, y = freedom_of_speech, color = election_integrity)) 
+  geom_point(mapping = aes(x = liberal_democracy, y = freedom_of_speech, color = incarceration_rate)) 
 
 
 ```
-
+In thiss diagram, we can see that democracies with the highest incarceration rate also score on the low end with regards to liberal democracies and freedom of speech. We think this could be because of political prisoners that are dissenters of the government.
 
 # media corrupt
 
