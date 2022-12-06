@@ -242,5 +242,9 @@ check individueel
 summary(lmspeech)
 ```
 
+## Mohamed Ismael liberal democracy & freedom of speech
+
+## Mohamed Elgendy liberal democracy & equal opportunity
+
 
 
