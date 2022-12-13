@@ -14,69 +14,27 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r}
   library(tidyverse)
 ```
-# Import
-```{r}
-  qog_std <- read.csv("dataset/qog_std_cs_jan22.csv")
 
-
-
-qog_std %>% drop_na()
-```
-```{r}
- qog_std$oecd_c
-```
 # Tidy
 
+## Import
+```{r}
+  qog_std <- read.csv("dataset/qog_std_cs_jan22.csv")
+```
+
 ## Friendly variable names
-Basic Human Needs (SPI) (spi_bn)
-Human Capital Index (egov_hci)
-COVID
-Political Rights (fh_pr)
-Paid Bribe: Police (gcb_bpol)
-Total bribery rate, total population (gcb_br)
-Accountability and Transparency (iiag_acc)
-Anti-corruption (iiag_corr)
-Number of previous democratic breakdowns (bmr_dembr)
-Number of COVID-19 cases reported (jht_ccc) 436
-Number of COVID-19 deaths reported (jht_ccd)
-Life Expectancy, Both sexes, Age 1-4 years (ihme_lifexp_0104t)
-Total fertility rates (oecd_fertility_t1)
-Health (iiag_he)
-Road fatalities (oecd_rddeath_t1)
-Adult population smoking daily (oecd_smoke_g1)
-Alcohol consumption per capita (in litres) (who_alcohol10)
-Suicide Rate (per 100,000 population), Total (who_suit)
-Employment rate total 15-64 (eu_empy1564t)
-Youths not in education or employment 15-19 (oecd_socexclus_t1a)
-Youths not in education or employment 20-24 (oecd_socexclus_t1b)
+
+These are the variables we would like to focus on.
+
 liberal democracy index (vdem_libdem)
-Satisfaction with your life (wvs_satlif)
+
+political corruption (vdem_corr)
+
 Freedom of Expression and Belief (fh_feb)
-Type of Government (cpds_tg)
-Institution (gol_inst) 
-Top 10% income share (top_top10_income_share)
-Top 1% income share (top_top1_income_share)
- Extent of market dominance. 1-7 (best) (wef_md)
- Burden of government regulation. 1-7 (best) (wef_bgr)
-Cultural Diversity (fe_cultdiv)
-Population growth rates (oecd_evopop_g1)
-Employment rates: total (oecd_emplgndr_t1c)
-Employment rates for age group 15-24 (oecd_emplage_t1a)
-Perception of Electoral Integrity Index Type (pei_peit)
-Institution (gol_inst)
-The Region of the Country (ht_region)
 
-Incarceration (1-5 Higher incarceration) (gpi_jail)
-Unemployment total (wdi_unempilo)
-Organized crime. 1-7 (best) (wef_oc)
-Economic Freedom of the World Index (current) (fi_index)
-Percentage with No Schooling, Female and Male (bl_lumf)
- Civil Rights (bti_cr)
+Equal opportunity (bti_eo)
 
 
-
-
-# Main question : How has COVID-19 effected education and mental health? (suicide rate, alcohol consumptions)
 
 
 ```{r}
@@ -86,45 +44,27 @@ democracy_effect <- qog_std %>%
     vdem_corr,
     bti_eo,
     fh_feb,
-    vdem_mecorrpt,
-    ht_region,
-    gpi_jail,
-    wdi_unempilo,
-    wef_oc,
-    fi_index,
-    bl_lumf,
-    bti_cr
   )%>%
   rename(
     liberal_democracy = vdem_libdem,
     political_corr = vdem_corr,
     equal_oppor = bti_eo,
     freedom_of_speech = fh_feb,
-    media_corrupt = vdem_mecorrpt,
-    region = ht_region,
-    unemployment = wdi_unempilo,
-    organized_crime = wef_oc,
-    incarceration_rate = gpi_jail,
-    economic_freedom = fi_index,
-    no_schooling = bl_lumf,
-    civil_rights = bti_cr
   ) %>% drop_na(liberal_democracy, 
                 political_corr, 
                 equal_oppor, 
-                freedom_of_speech, 
-                media_corrupt
+                freedom_of_speech
   )
     
-
-democracy_effect
 ```
-Every plot should have a title
+We filtered the dataset so we only have the variables we would like to use. We gave them more clear names and dropped all rows with NA values.
 
 ## Political corruption
 ```{r}
   ggplot(data = democracy_effect) +
   geom_histogram(mapping = aes(x = political_corr), binwidth = 0.05)
 ```
+
 We can see there are more countries in the data set with a higher political corruption index. We can also see that there is a little concentration in the middle with countries that score about average on the political corruption scale.
 
 
@@ -133,6 +73,7 @@ We can see there are more countries in the data set with a higher political corr
   ggplot(data = democracy_effect) +
   geom_histogram(mapping = aes(x = liberal_democracy), binwidth = 0.02)
 ```
+
 We can see in the histogram for liberal democracy that the higher the value is, the lower the likelihood is for a country to qualify for it.
 
 With a lower binwidth, we are able to more accurately spot a downward thread in the histogram.
@@ -143,6 +84,7 @@ With a lower binwidth, we are able to more accurately spot a downward thread in 
   ggplot(data = democracy_effect) +
   geom_smooth(mapping = aes(x = liberal_democracy, y = political_corr))
 ```
+
 We can see that there is a negative correlation between political corruption and liberal democracy. This is to be expected, because for a country to score high on the liberal democracy index, that country should score low on political corruption. On of the criteria for a liberal democracy is effective checks and balances, and that is not achieved when there is a high amount of political corruption.
 
 ## Equal opportunity
@@ -150,6 +92,7 @@ We can see that there is a negative correlation between political corruption and
   ggplot(data = democracy_effect) +
   geom_bar(mapping = aes(x = equal_oppor))
 ```
+
 We can see that there is a negative curvilinear relationship between the equal opportunity and the way countries score on it. There are less countries on the low end and high end on the equal opportunity scale as opposed to countries that score between 3 and 7. The highest amount of countries have score of 5.
 
 ## Liberal democracy and equal opportunity
@@ -159,11 +102,13 @@ We can see that there is a negative curvilinear relationship between the equal o
   geom_smooth(mapping = aes(x = liberal_democracy, y = equal_oppor))
 
 ```
+
 ## Freedom of speech
 ```{r}
   ggplot(data = democracy_effect) +
   geom_bar(mapping = aes(x = freedom_of_speech))
 ```
+
 ### Zoom in on low score freedom of speech
 ```{r}
   freedom_low <- democracy_effect %>%
@@ -172,13 +117,9 @@ We can see that there is a negative curvilinear relationship between the equal o
   ggplot(data = freedom_low) +
   geom_bar(mapping = aes(x = freedom_of_speech))
 ```
+
 It appears that there's no column in the freedom of speech variable that has the value 1. The bar plot for freedom of speech has a low number of countries with a score lower than 2.
 
-# Further analysis required*
-```{r}
-  ggplot(data = democracy_effect) +
-  geom_histogram(mapping = aes(x = incarceration_rate), binwidth = 0.2)
-```
 
 
 ## Freedom of speech and liberal democracy
@@ -186,40 +127,10 @@ It appears that there's no column in the freedom of speech variable that has the
   ggplot(data = democracy_effect) +
   geom_point(mapping = aes(x = liberal_democracy, y = freedom_of_speech)) 
 ```
+
 Although the relationship is not too strong, we can see that there is a positive correlation between liberal democracy and freedom of speech. This lines up with our expectations, because for a country to score high on the liberal democracy index, they have to protect civil liberties. A country with a lower score should also score lower on freedom of speech.
-```{r}
-  ggplot(data = democracy_effect) +
-  geom_point(mapping = aes(x = liberal_democracy, y = freedom_of_speech, color = incarceration_rate)) 
 
 
-```
-In thiss diagram, we can see that democracies with the highest incarceration rate also score on the low end with regards to liberal democracies and freedom of speech. We think this could be because of political prisoners that are dissenters of the government.
-
-# media corrupt
-
-```{r}
-
-  ggplot(data = democracy_effect) +
-  geom_point(mapping = aes(x = liberal_democracy, y = media_corrupt, color = economic_freedom))
-
-```
-Despite freedom of speech being higher in liberal democracies, we see that media corruption is also higher.
-We think might be because there are large companies that want to influence voters to align with their interests.If a large company sees that certain political parties want to implement rules that might damage their revenue, they might
-use the media to steer the conversation in their favor in order to make those rules unpopular to implement.
-
-```{r}
-
-  ggplot(data = democracy_effect) +
-  geom_bar(mapping = aes(x = institution))
-```
-
-
-##unexpected outcome after researching it turns out that newly trasitioned countriecies the more corruption it will have
-check individueel
-```{r}
-  ggplot(data = democracy_effect) +
-  geom_smooth(mapping = aes(x = incarceration_rate, y = no_schooling), method = "lm")
-```
 
 
 ```{r}
@@ -230,10 +141,6 @@ check individueel
 
 ```
 
-```{r}
-  ggplot(data = democracy_effect) +
-  geom_boxplot(mapping = aes(x = equal_oppor, y = incarceration_rate, group = equal_oppor))
-```
 
 
 ```{r}
