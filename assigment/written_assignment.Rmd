@@ -2,11 +2,17 @@
 title: "written_assignment"
 author: "Mohamed Ismael, Mohamed Elgendy"
 date: "2022-09-20"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
-
+## Background:
+The QoG Standard Dataset includes over 2,000 variables, while the QoG Basic Dataset includes approximately 300 variables from the Standard Dataset. The QoG OECD Dataset includes data on OECD member countries and has high data coverage. Each variable entry in this codebook specifies in which dataset the variable can be found.
+The variables in the Standard, Basic, and OECD datasets are categorized in 19 thematic categories. This categorization should be seen as a guideline rather than a definite classification. Most variables belong only to one category, but some variables belong to more than one category. We have explored some chosen individual variables from this data set to better understand it and then we have compared them against each other to understand if there are correlations/relationships between them. We focused on the effect of liberal democracy on some of the continuous variables, such as political corruption, equal opportunity and freedom of speech. Then, we used linear regression models to analyse the correlations Moreover, we created the multivariate linear regression model, which is a statistical method that is used to model the linear relationship between a dependent variable and multiple independent variables. It is used to make predictions about the dependent variable based on the values of the independent variables.
+  
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
 ```
 
 ## R Markdown
@@ -34,6 +40,7 @@ Freedom of Expression and Belief (fh_feb)
 
 Equal opportunity (bti_eo)
 
+Economic erformance (bti_ep)
 
 
 
@@ -44,12 +51,14 @@ democracy_effect <- qog_std %>%
     vdem_corr,
     bti_eo,
     fh_feb,
+    bti_ep
   )%>%
   rename(
     liberal_democracy = vdem_libdem,
     political_corr = vdem_corr,
     equal_oppor = bti_eo,
     freedom_of_speech = fh_feb,
+    economic_performance =  bti_ep
   ) %>% drop_na(liberal_democracy, 
                 political_corr, 
                 equal_oppor, 
@@ -92,8 +101,18 @@ We can see that there is a negative correlation between political corruption and
   ggplot(data = democracy_effect) +
   geom_bar(mapping = aes(x = equal_oppor))
 ```
-
 We can see that there is a negative curvilinear relationship between the equal opportunity and the way countries score on it. There are less countries on the low end and high end on the equal opportunity scale as opposed to countries that score between 3 and 7. The highest amount of countries have score of 5.
+
+
+## Liberal democracy and Economic Performance
+
+```{r}
+  ggplot(data = democracy_effect) +
+  geom_smooth(mapping = aes(x = liberal_democracy, y = economic_performance))
+
+```
+
+As we can see here that the more liberal democratic the state is, the higher the chance that it will have better economic performance.
 
 ## Liberal democracy and equal opportunity
 
@@ -142,7 +161,7 @@ Although the relationship is not too strong, we can see that there is a positive
 ```
 
 
-
+=
 ```{r}
   lmspeech <- lm(liberal_democracy ~ freedom_of_speech, data = democracy_effect)
 
@@ -152,6 +171,36 @@ summary(lmspeech)
 ## Mohamed Ismael liberal democracy & freedom of speech
 
 ## Mohamed Elgendy liberal democracy & equal opportunity
+The following the is the code for creating the regression model:
+
+```{r}
+model <- lm(equal_oppor ~ liberal_democracy, data = democracy_effect)
+summary(model)
+```
+
+Based on that outcome, the model is trying to predict the dependent variable equal_oppor based on the independent variable liberal_democracy.
+
+The "Residuals" section shows the difference between the predicted values and the actual values for the dependent variable. The "Coefficients" section shows the regression coefficients for each independent variable in the model. In this case, there is only one independent variable, liberal_democracy, and the coefficient is 5.4117. This means that for every one unit increase in liberal_democracy, we would expect to see a 5.4117 unit increase in equal_oppor. The intercept is 3.1737, which is the predicted value of equal_oppor when liberal_democracy is zero.
 
 
+In conclusion:   
 
+1. Residual standard error: The residual standard error is a measure of the amount of error in the model. A lower residual standard error indicates a better fit. In this case, the residual standard error is 1.453, which is relatively low. This suggests that the model is a good fit for the data.
+
+2. R-squared values: The R-squared values are measures of how well the model fits the data. The R-squared value is the proportion of the variance in the dependent variable that is explained by the independent variable. A value closer to 1 indicates a better fit. In this case, the R-squared values are 0.4114 and 0.407, which are relatively high. This suggests that the model explains a significant amount of the variance in the data.
+
+3. p-value for the F-statistic: The p-value for the F-statistic is used to test the overall significance of the model. A low p-value (typically less than 0.05) indicates that the model is a good fit for the data. In this case, the p-value is extremely low (less than 2.2e-16), indicating that the model is a good fit for the data.
+
+```{r}
+model <- lm(equal_oppor ~ liberal_democracy + freedom_of_speech + political_corr + economic_performance, data = democracy_effect)
+
+summary(model)
+```
+This multivariate linear regression model is analyzing the relationship between the outcome variable "equal_oppor" and four predictor variables: "liberal_democracy", "freedom_of_speech", "political_corr", and "economic_performance". The model estimates the following coefficients for each predictor variable:
+
+1. A one unit increase in "liberal_democracy" is associated with a 1.00546 unit increase in "equal_oppor", holding all other variables constant.
+2. A one unit increase in "freedom_of_speech" is associated with a 0.08116 unit increase in "equal_oppor", holding all other variables constant.
+3. A one unit increase in "political_corr" is associated with a 2.05663 unit decrease in "equal_oppor", holding all other variables constant.
+4. A one unit increase in "economic_performance" is associated with a 0.32486 unit increase in "equal_oppor", holding all other variables constant.
+
+The model's residual standard error is 1.235 and the multiple R-squared value is 0.5848, indicating that the model explains approximately 58.5% of the variance in the outcome variable. The F-statistic of 46.13 and a p-value of < 2.2e-16 indicate that the model is a good fit for the data. The p-values for the coefficients of "liberal_democracy" and "freedom_of_speech" are relatively high, indicating that the relationship between these variables and the outcome variable is not statistically significant at a significance level of 0.05. However, the p-values for the coefficients of "political_corr" and "economic_performance" are lower, indicating that the relationship between these variables and the outcome variable is statistically significant at a significance level of 0.05.
